@@ -36,6 +36,7 @@
     <Policy>JS-TransformToAnthropic</Policy>
     <Policy>JS-TransformToGemini</Policy>
     <Policy>KVM-GetProviderCredentials</Policy>
+    <Policy>Q-EnforceTokenQuota</Policy>
     <Policy>RF-InvalidModel</Policy>
     <Policy>RF-MissingKey</Policy>
     <Policy>RF-UnsupportedPath</Policy>

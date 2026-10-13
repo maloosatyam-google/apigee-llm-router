@@ -7,7 +7,7 @@ An enterprise API Proxy for **Google Cloud Apigee X** that delivers **LiteLLM-co
 - **Intelligent Routing & Aliasing**: Route via canonical model IDs or logical aliases (`fast`, `smart`, `coding`, `cheap`, `haiku-4-5`, `haiku-5-5`, `sonnet-4-6`, `qwen`, `glm`).
 - **Secure Virtual Keys**: Consumers authenticate to Apigee with virtual API keys; upstream provider credentials remain hidden inside Apigee Key-Value Maps (KVM) or Google Service Account tokens.
 - **Token Accounting & Real-Time Cost Tracking**: Automatically calculates prompt/completion token usage and computes USD costs via model pricing rate cards.
-- **Enterprise Governance**: SpikeArrest rate limiting, CORS preflight handling, and standardized OpenAI error formatting.
+- **Enterprise Governance**: Token-weighted Quota enforcement (`Q-EnforceTokenQuota`), SpikeArrest rate limiting (`SA-SpikeArrest`), CORS preflight handling, and standardized OpenAI error formatting.
 
 ---
 
@@ -19,7 +19,7 @@ flowchart TD
     
     subgraph Apigee Ingestion & Governance
         CORS["CORS & Auth (VA-VerifyAPIKey)"]
-        RateLimit["Rate Limiting (SA-SpikeArrest)"]
+        RateLimit["Rate Limiting & Token Quota (SA-SpikeArrest + Q-EnforceTokenQuota)"]
         Router["Model & Multi-Cloud Router (JS-ExtractAndRouteModel)"]
         Creds["Credential Resolver (KVM / Environment)"]
     end
@@ -262,6 +262,11 @@ Every chat completion through the gateway returns telemetry headers:
 - `x-llm-completion-tokens`: Completion token count
 - `x-llm-total-tokens`: Total token count
 - `x-llm-cost-usd`: Precise cost in USD calculated from rate cards
+- `x-ratelimit-limit-tokens`: Token quota limit configured on the API Product (`Q-EnforceTokenQuota`)
+- `x-ratelimit-remaining-tokens`: Remaining token quota in the current window (`Q-EnforceTokenQuota`)
 
-> **No Apigee Monetization Add-On Required**: To ensure the proxy works out-of-the-box across all Apigee X organizations (including evaluation and standard orgs without the Monetization add-on enabled), it does **not** depend on `<MonetizationLimitsCheck>`. Instead, token usage and USD cost are computed in [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) and exported to Apigee Analytics custom metrics/dimensions via [`DC-ModelAnalytics.xml`](./apiproxy/policies/DC-ModelAnalytics.xml) (`DataCapture`).
+> **Usage Limits & Cost Tracking (No Monetization Add-On Required)**:
+> - **Usage Limits**: Enforced via [`Q-EnforceTokenQuota.xml`](./apiproxy/policies/Q-EnforceTokenQuota.xml) (`<Quota>` policy weighted by `flow.quota_weight` from [`EstimatePromptTokens.js`](./apiproxy/resources/jsc/EstimatePromptTokens.js) and governed by the API Product's quota settings) alongside [`SA-SpikeArrest.xml`](./apiproxy/policies/SA-SpikeArrest.xml).
+> - **Cost & Token Analytics**: Computed in [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) and exported to Apigee Analytics custom metrics/dimensions via [`DC-ModelAnalytics.xml`](./apiproxy/policies/DC-ModelAnalytics.xml) (`DataCapture`), so the proxy works out-of-the-box on any Apigee X org without requiring the Monetization add-on (`<MonetizationLimitsCheck>`).
+
 

@@ -43,6 +43,10 @@
         <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
       </Step>
       <Step>
+        <Name>Q-EnforceTokenQuota</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
         <Name>KVM-GetProviderCredentials</Name>
         <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
       </Step>

@@ -8,6 +8,7 @@
   var reqContent = context.getVariable("request.content") || "";
   if (!reqContent) {
     context.setVariable("flow.estimated_prompt_tokens", "0");
+    context.setVariable("flow.quota_weight", "1");
     return;
   }
 
@@ -37,7 +38,9 @@
     // Heuristic: ~4 characters per token, minimum 1 token if content exists
     var estimatedTokens = totalChars > 0 ? Math.max(1, Math.ceil(totalChars / 4)) : 0;
     context.setVariable("flow.estimated_prompt_tokens", String(estimatedTokens));
+    context.setVariable("flow.quota_weight", String(Math.max(1, estimatedTokens)));
   } catch (e) {
     context.setVariable("flow.estimated_prompt_tokens", "0");
+    context.setVariable("flow.quota_weight", "1");
   }
 })();
