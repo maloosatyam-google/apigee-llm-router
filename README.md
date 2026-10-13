@@ -268,8 +268,8 @@ Every chat completion through the gateway returns telemetry headers:
 - `x-ratelimit-remaining-cost-micros`: Remaining cost budget in micro-USD in the current window (`Q-EnforceCostQuota`)
 
 > **Token & Cost Usage Limits via `<Quota>` (No Monetization Add-On Required)**:
-> - **Token Limits (`Q-EnforceTokenQuota.xml`)**: Enforces token consumption limits per API Product (`quota`, default `10,000` tokens/min) weighted by `flow.quota_weight`.
-> - **Cost / Budget Limits (`Q-EnforceCostQuota.xml`)**: Enforces USD spend limits per API Product (`llm_cost_quota_micros` custom attribute, default `10,000,000` micro-USD = **\$10.00**/min) weighted by `flow.cost_quota_weight_micros` (computed in [`EstimatePromptTokens.js`](./apiproxy/resources/jsc/EstimatePromptTokens.js) using each model's rate card, where $1,000,000\ \mu\text{USD} = \$1.00$ so Apigee's integer `<MessageWeight>` tracks sub-cent LLM costs accurately).
+> - **Token Rate Limits (`Q-EnforceTokenQuota.xml`)**: Enforces token consumption limits per API Product (`quota`, default `10,000` tokens / `1` `minute`) weighted by `flow.quota_weight`.
+> - **Monthly Dollar Budget Limits (`Q-EnforceCostQuota.xml`)**: Enforces monthly USD spend limits per API Product (`llm_cost_quota_micros` custom attribute, default `10,000,000` micro-USD = **\$10.00 / `1` `month`**) weighted by `flow.cost_quota_weight_micros` (computed in [`EstimatePromptTokens.js`](./apiproxy/resources/jsc/EstimatePromptTokens.js) using each model's rate card, where $1,000,000\ \mu\text{USD} = \$1.00$ so Apigee's integer `<MessageWeight>` tracks sub-cent LLM costs accurately).
 > - **Post-Call Analytics (`DC-ModelAnalytics.xml`)**: Exact total tokens and USD cost from [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) are captured into Apigee Analytics custom metrics/dimensions without requiring the Apigee Monetization add-on (`<MonetizationLimitsCheck>`).
 
 

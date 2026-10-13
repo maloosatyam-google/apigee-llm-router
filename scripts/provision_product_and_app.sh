@@ -39,6 +39,14 @@ PRODUCT_PAYLOAD=$(cat <<EOF
     {
       "name": "llm_cost_quota_micros",
       "value": "10000000"
+    },
+    {
+      "name": "llm_cost_quota_interval",
+      "value": "1"
+    },
+    {
+      "name": "llm_cost_quota_timeunit",
+      "value": "month"
     }
   ],
   "operationGroup": {

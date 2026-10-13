@@ -2,8 +2,8 @@
 <Quota continueOnError="false" enabled="true" name="Q-EnforceCostQuota">
   <DisplayName>Q-EnforceCostQuota</DisplayName>
   <Allow count="10000000" countRef="verifyapikey.VA-VerifyAPIKey.apiproduct.llm_cost_quota_micros"/>
-  <Interval ref="verifyapikey.VA-VerifyAPIKey.apiproduct.developer.quota.interval">1</Interval>
-  <TimeUnit ref="verifyapikey.VA-VerifyAPIKey.apiproduct.developer.quota.timeunit">minute</TimeUnit>
+  <Interval ref="verifyapikey.VA-VerifyAPIKey.apiproduct.llm_cost_quota_interval">1</Interval>
+  <TimeUnit ref="verifyapikey.VA-VerifyAPIKey.apiproduct.llm_cost_quota_timeunit">month</TimeUnit>
   <Identifier ref="verifyapikey.VA-VerifyAPIKey.client_id"/>
   <MessageWeight ref="flow.cost_quota_weight_micros"/>
   <Distributed>true</Distributed>
