@@ -252,7 +252,7 @@ curl -X POST "https://YOUR-APIGEE-HOST/v1/chat/completions" \
 
 ---
 
-## Response Headers & Telemetry
+## Response Headers, Cost Tracking & Telemetry
 
 Every chat completion through the gateway returns telemetry headers:
 - `x-llm-provider`: Target provider (`gcp-claude`, `aws-claude`, `azure-claude`, `anthropic`, `openai`, `gemini`, `qwen`, `glm`)
@@ -262,3 +262,6 @@ Every chat completion through the gateway returns telemetry headers:
 - `x-llm-completion-tokens`: Completion token count
 - `x-llm-total-tokens`: Total token count
 - `x-llm-cost-usd`: Precise cost in USD calculated from rate cards
+
+> **No Apigee Monetization Add-On Required**: To ensure the proxy works out-of-the-box across all Apigee X organizations (including evaluation and standard orgs without the Monetization add-on enabled), it does **not** depend on `<MonetizationLimitsCheck>`. Instead, token usage and USD cost are computed in [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) and exported to Apigee Analytics custom metrics/dimensions via [`DC-ModelAnalytics.xml`](./apiproxy/policies/DC-ModelAnalytics.xml) (`DataCapture`).
+
