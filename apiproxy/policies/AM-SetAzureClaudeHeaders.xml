@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AM-SetAzureClaudeHeaders">
+  <DisplayName>AM-SetAzureClaudeHeaders</DisplayName>
+  <AssignVariable>
+    <Name>target.copy.pathsuffix</Name>
+    <Value>false</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>target.url</Name>
+    <Template>https://{flow.azure_resource}.services.ai.azure.com/anthropic/v1/messages</Template>
+  </AssignVariable>
+  <Set>
+    <Headers>
+      <Header name="api-key">{flow.azure_api_key}</Header>
+      <Header name="x-api-key">{flow.azure_api_key}</Header>
+      <Header name="anthropic-version">2023-06-01</Header>
+      <Header name="Content-Type">application/json</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
+

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+  <Description>Apigee LLM Router Proxy Endpoint - OpenAI-Compatible Gateway</Description>
+  <FaultRules/>
+  <DefaultFaultRule name="DefaultFaultRule">
+    <Step>
+      <Name>JS-FormatErrorResponse</Name>
+    </Step>
+    <Step>
+      <Name>CORS-Headers</Name>
+    </Step>
+    <AlwaysEnforce>true</AlwaysEnforce>
+  </DefaultFaultRule>
+
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>EV-ExtractBearerToken</Name>
+        <Condition>request.verb != "OPTIONS"</Condition>
+      </Step>
+      <Step>
+        <Name>AM-SetAPIKeyVariable</Name>
+        <Condition>request.verb != "OPTIONS" and flow.extracted_apikey == null</Condition>
+      </Step>
+      <Step>
+        <Name>VA-VerifyAPIKey</Name>
+        <Condition>request.verb != "OPTIONS" and !(proxy.pathsuffix MatchesPath "/health") and !(proxy.pathsuffix MatchesPath "/healthz")</Condition>
+      </Step>
+      <Step>
+        <Name>SA-SpikeArrest</Name>
+        <Condition>request.verb != "OPTIONS"</Condition>
+      </Step>
+      <Step>
+        <Name>JS-ExtractAndRouteModel</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>RF-InvalidModel</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions" and (flow.parse_error != null or flow.invalid_model = "true")</Condition>
+      </Step>
+      <Step>
+        <Name>JS-EstimatePromptTokens</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>KVM-GetProviderCredentials</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>JS-ResolveProviderCredentials</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>RF-MissingKey</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions" and flow.missing_provider_key = "true"</Condition>
+      </Step>
+      <Step>
+        <Name>AM-RemoveClientAuth</Name>
+        <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+    </Request>
+    <Response/>
+  </PreFlow>
+
+  <Flows>
+    <Flow name="OptionsPreFlight">
+      <Description>Handle CORS OPTIONS preflight request</Description>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>CORS-Headers</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb == "OPTIONS"</Condition>
+    </Flow>
+
+    <Flow name="ModelsFlow">
+      <Description>OpenAI-compatible GET /v1/models endpoint</Description>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>JS-ModelsEndpoint</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb == "GET" and (proxy.pathsuffix MatchesPath "/models" or proxy.pathsuffix MatchesPath "/models/*")</Condition>
+    </Flow>
+
+    <Flow name="HealthFlow">
+      <Description>Health check endpoint for gateway status</Description>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>JS-HealthEndpoint</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb == "GET" and (proxy.pathsuffix MatchesPath "/health" or proxy.pathsuffix MatchesPath "/healthz")</Condition>
+    </Flow>
+
+    <Flow name="ChatCompletionsFlow">
+      <Description>OpenAI-compatible POST /v1/chat/completions endpoint</Description>
+      <Request/>
+      <Response/>
+      <Condition>request.verb == "POST" and proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+    </Flow>
+
+    <Flow name="UnsupportedPathFlow">
+      <Description>Reject unsupported paths or methods with 404 OpenAI error</Description>
+      <Request>
+        <Step>
+          <Name>RF-UnsupportedPath</Name>
+        </Step>
+      </Request>
+      <Response/>
+    </Flow>
+  </Flows>
+
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response>
+      <Step>
+        <Name>JS-CalculateCost</Name>
+        <Condition>proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>AM-SetResponseHeaders</Name>
+        <Condition>proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>DC-ModelAnalytics</Name>
+        <Condition>proxy.pathsuffix MatchesPath "/chat/completions"</Condition>
+      </Step>
+      <Step>
+        <Name>CORS-Headers</Name>
+      </Step>
+    </Response>
+  </PostFlow>
+
+  <HTTPProxyConnection>
+    <BasePath>/v1</BasePath>
+    <Properties/>
+  </HTTPProxyConnection>
+
+  <RouteRule name="NoRoute">
+    <Condition>request.verb == "OPTIONS" or proxy.pathsuffix MatchesPath "/models" or proxy.pathsuffix MatchesPath "/models/*" or proxy.pathsuffix MatchesPath "/health" or proxy.pathsuffix MatchesPath "/healthz"</Condition>
+  </RouteRule>
+
+  <RouteRule name="RouteToGCPClaude">
+    <Condition>flow.provider = "gcp-claude"</Condition>
+    <TargetEndpoint>target-gcp-claude</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToAWSClaude">
+    <Condition>flow.provider = "aws-claude"</Condition>
+    <TargetEndpoint>target-aws-claude</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToAzureClaude">
+    <Condition>flow.provider = "azure-claude"</Condition>
+    <TargetEndpoint>target-azure-claude</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToAnthropic">
+    <Condition>flow.provider = "anthropic"</Condition>
+    <TargetEndpoint>target-anthropic</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToGemini">
+    <Condition>flow.provider = "gemini"</Condition>
+    <TargetEndpoint>target-gemini</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToQwen">
+    <Condition>flow.provider = "qwen"</Condition>
+    <TargetEndpoint>target-qwen</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToGLM">
+    <Condition>flow.provider = "glm"</Condition>
+    <TargetEndpoint>target-glm</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteToOpenAI">
+    <Condition>flow.provider = "openai"</Condition>
+    <TargetEndpoint>target-openai</TargetEndpoint>
+  </RouteRule>
+
+  <RouteRule name="RouteDefault">
+    <TargetEndpoint>target-openai</TargetEndpoint>
+  </RouteRule>
+</ProxyEndpoint>

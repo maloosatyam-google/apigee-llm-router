@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="target-glm">
+  <Description>Upstream GLM (Zhipu AI BigModel OpenAI-Compatible) Target Endpoint</Description>
+  <FaultRules/>
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>AM-SetGLMHeaders</Name>
+      </Step>
+    </Request>
+    <Response>
+      <Step>
+        <Name>JS-ExtractNativeResponseTokens</Name>
+      </Step>
+    </Response>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+  <Flows/>
+  <HTTPTargetConnection>
+    <Properties>
+      <Property name="connect.timeout.millis">60000</Property>
+      <Property name="io.timeout.millis">120000</Property>
+    </Properties>
+    <URL>https://open.bigmodel.cn</URL>
+  </HTTPTargetConnection>
+</TargetEndpoint>

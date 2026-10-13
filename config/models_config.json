@@ -1,0 +1,298 @@
+{
+  "version": "1.2.0",
+  "providers": {
+    "openai": {
+      "baseUrl": "https://api.openai.com/v1",
+      "chatPath": "/chat/completions",
+      "authHeader": "Authorization",
+      "authPrefix": "Bearer "
+    },
+    "anthropic": {
+      "baseUrl": "https://api.anthropic.com/v1",
+      "chatPath": "/messages",
+      "authHeader": "x-api-key",
+      "authPrefix": "",
+      "apiVersion": "2023-06-01"
+    },
+    "gcp-claude": {
+      "cloud": "gcp",
+      "service": "Vertex AI Model Garden",
+      "baseUrl": "https://aiplatform.googleapis.com/v1",
+      "chatPath": "/projects/{project}/locations/{location}/publishers/anthropic/models/{model}:rawPredict",
+      "authType": "GoogleAccessToken",
+      "anthropicVersion": "vertex-2023-10-16"
+    },
+    "aws-claude": {
+      "cloud": "aws",
+      "service": "Amazon Bedrock",
+      "baseUrl": "https://bedrock-runtime.{region}.amazonaws.com",
+      "chatPath": "/model/{model}/invoke",
+      "authHeader": "Authorization",
+      "authPrefix": "Bearer ",
+      "anthropicVersion": "bedrock-2023-05-31"
+    },
+    "azure-claude": {
+      "cloud": "azure",
+      "service": "Azure AI Foundry",
+      "baseUrl": "https://{resource}.services.ai.azure.com/anthropic/v1",
+      "chatPath": "/messages",
+      "authHeader": "api-key",
+      "authPrefix": "",
+      "apiVersion": "2023-06-01"
+    },
+    "gemini": {
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "chatPath": "/models/{model}:generateContent",
+      "authHeader": "x-goog-api-key",
+      "authPrefix": ""
+    },
+    "qwen": {
+      "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "chatPath": "/chat/completions",
+      "authHeader": "Authorization",
+      "authPrefix": "Bearer "
+    },
+    "glm": {
+      "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+      "chatPath": "/chat/completions",
+      "authHeader": "Authorization",
+      "authPrefix": "Bearer "
+    }
+  },
+  "models": {
+    "gpt-4o": {
+      "provider": "openai",
+      "upstreamModel": "gpt-4o",
+      "inputRatePerMillion": 2.50,
+      "outputRatePerMillion": 10.00
+    },
+    "gpt-4o-mini": {
+      "provider": "openai",
+      "upstreamModel": "gpt-4o-mini",
+      "inputRatePerMillion": 0.15,
+      "outputRatePerMillion": 0.60
+    },
+    "o1": {
+      "provider": "openai",
+      "upstreamModel": "o1",
+      "inputRatePerMillion": 15.00,
+      "outputRatePerMillion": 60.00
+    },
+    "o3-mini": {
+      "provider": "openai",
+      "upstreamModel": "o3-mini",
+      "inputRatePerMillion": 1.10,
+      "outputRatePerMillion": 4.40
+    },
+    "claude-haiku-4-5": {
+      "provider": "gcp-claude",
+      "cloudProviders": ["gcp", "aws", "azure"],
+      "upstreamModels": {
+        "gcp": "claude-haiku-4-5@20251001",
+        "aws": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+        "azure": "claude-haiku-4-5"
+      },
+      "inputRatePerMillion": 1.00,
+      "outputRatePerMillion": 5.00
+    },
+    "claude-haiku-5-5": {
+      "provider": "gcp-claude",
+      "cloudProviders": ["gcp", "aws", "azure"],
+      "upstreamModels": {
+        "gcp": "claude-haiku-5-5",
+        "aws": "us.anthropic.claude-haiku-5-5-v1:0",
+        "azure": "claude-haiku-5-5"
+      },
+      "inputRatePerMillion": 0.10,
+      "outputRatePerMillion": 0.50
+    },
+    "claude-sonnet-4-6": {
+      "provider": "gcp-claude",
+      "cloudProviders": ["gcp", "aws", "azure"],
+      "upstreamModels": {
+        "gcp": "claude-sonnet-4-6",
+        "aws": "us.anthropic.claude-sonnet-4-6-v1:0",
+        "azure": "claude-sonnet-4-6"
+      },
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "gcp/claude-haiku-4-5": {
+      "provider": "gcp-claude",
+      "cloud": "gcp",
+      "upstreamModel": "claude-haiku-4-5@20251001",
+      "inputRatePerMillion": 1.00,
+      "outputRatePerMillion": 5.00
+    },
+    "gcp/claude-haiku-5-5": {
+      "provider": "gcp-claude",
+      "cloud": "gcp",
+      "upstreamModel": "claude-haiku-5-5",
+      "inputRatePerMillion": 0.10,
+      "outputRatePerMillion": 0.50
+    },
+    "gcp/claude-sonnet-4-6": {
+      "provider": "gcp-claude",
+      "cloud": "gcp",
+      "upstreamModel": "claude-sonnet-4-6",
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "aws/claude-haiku-4-5": {
+      "provider": "aws-claude",
+      "cloud": "aws",
+      "upstreamModel": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+      "inputRatePerMillion": 1.00,
+      "outputRatePerMillion": 5.00
+    },
+    "aws/claude-haiku-5-5": {
+      "provider": "aws-claude",
+      "cloud": "aws",
+      "upstreamModel": "us.anthropic.claude-haiku-5-5-v1:0",
+      "inputRatePerMillion": 0.10,
+      "outputRatePerMillion": 0.50
+    },
+    "aws/claude-sonnet-4-6": {
+      "provider": "aws-claude",
+      "cloud": "aws",
+      "upstreamModel": "us.anthropic.claude-sonnet-4-6-v1:0",
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "azure/claude-haiku-4-5": {
+      "provider": "azure-claude",
+      "cloud": "azure",
+      "upstreamModel": "claude-haiku-4-5",
+      "inputRatePerMillion": 1.00,
+      "outputRatePerMillion": 5.00
+    },
+    "azure/claude-haiku-5-5": {
+      "provider": "azure-claude",
+      "cloud": "azure",
+      "upstreamModel": "claude-haiku-5-5",
+      "inputRatePerMillion": 0.10,
+      "outputRatePerMillion": 0.50
+    },
+    "azure/claude-sonnet-4-6": {
+      "provider": "azure-claude",
+      "cloud": "azure",
+      "upstreamModel": "claude-sonnet-4-6",
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "claude-3-5-sonnet-20241022": {
+      "provider": "anthropic",
+      "upstreamModel": "claude-3-5-sonnet-20241022",
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "claude-3-5-sonnet": {
+      "provider": "anthropic",
+      "upstreamModel": "claude-3-5-sonnet-20241022",
+      "inputRatePerMillion": 3.00,
+      "outputRatePerMillion": 15.00
+    },
+    "claude-3-5-haiku-20241022": {
+      "provider": "anthropic",
+      "upstreamModel": "claude-3-5-haiku-20241022",
+      "inputRatePerMillion": 0.80,
+      "outputRatePerMillion": 4.00
+    },
+    "claude-3-5-haiku": {
+      "provider": "anthropic",
+      "upstreamModel": "claude-3-5-haiku-20241022",
+      "inputRatePerMillion": 0.80,
+      "outputRatePerMillion": 4.00
+    },
+    "claude-3-opus-20240229": {
+      "provider": "anthropic",
+      "upstreamModel": "claude-3-opus-20240229",
+      "inputRatePerMillion": 15.00,
+      "outputRatePerMillion": 75.00
+    },
+    "gemini-2.0-flash": {
+      "provider": "gemini",
+      "upstreamModel": "gemini-2.0-flash",
+      "inputRatePerMillion": 0.10,
+      "outputRatePerMillion": 0.40
+    },
+    "gemini-2.0-flash-exp": {
+      "provider": "gemini",
+      "upstreamModel": "gemini-2.0-flash-exp",
+      "inputRatePerMillion": 0.00,
+      "outputRatePerMillion": 0.00
+    },
+    "gemini-1.5-pro": {
+      "provider": "gemini",
+      "upstreamModel": "gemini-1.5-pro",
+      "inputRatePerMillion": 1.25,
+      "outputRatePerMillion": 5.00
+    },
+    "gemini-1.5-flash": {
+      "provider": "gemini",
+      "upstreamModel": "gemini-1.5-flash",
+      "inputRatePerMillion": 0.075,
+      "outputRatePerMillion": 0.30
+    },
+    "qwen-plus": {
+      "provider": "qwen",
+      "upstreamModel": "qwen-plus",
+      "inputRatePerMillion": 0.11,
+      "outputRatePerMillion": 0.28
+    },
+    "qwen-max": {
+      "provider": "qwen",
+      "upstreamModel": "qwen-max",
+      "inputRatePerMillion": 2.80,
+      "outputRatePerMillion": 8.40
+    },
+    "qwen-turbo": {
+      "provider": "qwen",
+      "upstreamModel": "qwen-turbo",
+      "inputRatePerMillion": 0.04,
+      "outputRatePerMillion": 0.08
+    },
+    "qwen-2.5-72b-instruct": {
+      "provider": "qwen",
+      "upstreamModel": "qwen2.5-72b-instruct",
+      "inputRatePerMillion": 0.50,
+      "outputRatePerMillion": 1.50
+    },
+    "qwen-2.5-coder-32b-instruct": {
+      "provider": "qwen",
+      "upstreamModel": "qwen2.5-coder-32b-instruct",
+      "inputRatePerMillion": 0.25,
+      "outputRatePerMillion": 0.75
+    },
+    "glm-4-plus": {
+      "provider": "glm",
+      "upstreamModel": "glm-4-plus",
+      "inputRatePerMillion": 1.40,
+      "outputRatePerMillion": 1.40
+    },
+    "glm-4-air": {
+      "provider": "glm",
+      "upstreamModel": "glm-4-air",
+      "inputRatePerMillion": 0.14,
+      "outputRatePerMillion": 0.14
+    },
+    "glm-4-flash": {
+      "provider": "glm",
+      "upstreamModel": "glm-4-flash",
+      "inputRatePerMillion": 0.00,
+      "outputRatePerMillion": 0.00
+    }
+  },
+  "aliases": {
+    "fast": "gemini-2.0-flash",
+    "smart": "gpt-4o",
+    "coding": "qwen-2.5-coder-32b-instruct",
+    "cheap": "glm-4-flash",
+    "qwen": "qwen-plus",
+    "glm": "glm-4-plus",
+    "haiku-4-5": "claude-haiku-4-5",
+    "haiku-5-5": "claude-haiku-5-5",
+    "sonnet-4-6": "claude-sonnet-4-6",
+    "default": "gemini-2.0-flash"
+  }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AM-SetQwenHeaders">
+  <DisplayName>AM-SetQwenHeaders</DisplayName>
+  <AssignVariable>
+    <Name>target.copy.pathsuffix</Name>
+    <Value>false</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>target.url</Name>
+    <Value>https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions</Value>
+  </AssignVariable>
+  <Set>
+    <Headers>
+      <Header name="Authorization">Bearer {flow.qwen_api_key}</Header>
+      <Header name="Content-Type">application/json</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

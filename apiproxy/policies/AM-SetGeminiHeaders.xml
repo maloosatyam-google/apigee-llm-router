@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AM-SetGeminiHeaders">
+  <DisplayName>AM-SetGeminiHeaders</DisplayName>
+  <AssignVariable>
+    <Name>target.copy.pathsuffix</Name>
+    <Value>false</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>target.url</Name>
+    <Template>https://generativelanguage.googleapis.com/v1beta/models/{flow.upstream_model}:generateContent</Template>
+  </AssignVariable>
+  <Set>
+    <Headers>
+      <Header name="x-goog-api-key">{flow.gemini_api_key}</Header>
+      <Header name="Content-Type">application/json</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

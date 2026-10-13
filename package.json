@@ -1,0 +1,27 @@
+{
+  "name": "apigee-llm-router",
+  "version": "1.2.0",
+  "description": "LiteLLM-compatible Apigee proxy supporting Claude (GCP, AWS, Azure), OpenAI, Google Gemini, Qwen, and GLM models",
+  "main": "tests/test-transforms.js",
+  "scripts": {
+    "test": "node tests/test-transforms.js",
+    "validate": "python3 scripts/validate_bundle.py",
+    "package": "bash scripts/package_bundle.sh",
+    "deploy": "bash scripts/deploy_proxy.sh",
+    "provision-kvm": "bash scripts/provision_kvm.sh",
+    "provision-app": "bash scripts/provision_product_and_app.sh",
+    "test:live": "bash scripts/test_live.sh"
+  },
+  "keywords": [
+    "apigee",
+    "litellm",
+    "llm-gateway",
+    "openai",
+    "anthropic",
+    "gemini",
+    "qwen",
+    "glm"
+  ],
+  "author": "",
+  "license": "Apache-2.0"
+}

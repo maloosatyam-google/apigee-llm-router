@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="true" enabled="true" name="AM-RemoveClientAuth">
+  <DisplayName>AM-RemoveClientAuth</DisplayName>
+  <Remove>
+    <Headers>
+      <Header name="Authorization"/>
+      <Header name="x-api-key"/>
+      <Header name="x-cloud-provider"/>
+      <Header name="x-provider"/>
+      <Header name="x-upstream-openai-key"/>
+      <Header name="x-upstream-anthropic-key"/>
+      <Header name="x-upstream-gemini-key"/>
+      <Header name="x-upstream-qwen-key"/>
+      <Header name="x-upstream-glm-key"/>
+      <Header name="x-upstream-aws-key"/>
+      <Header name="x-upstream-azure-key"/>
+      <Header name="x-aws-region"/>
+      <Header name="x-azure-resource"/>
+      <Header name="x-gcp-project-id"/>
+      <Header name="x-gcp-location"/>
+    </Headers>
+  </Remove>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DataCapture continueOnError="true" enabled="true" name="DC-ModelAnalytics">
+  <DisplayName>DC-ModelAnalytics</DisplayName>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <Capture>
+    <Collect ref="flow.upstream_model" default=""/>
+    <DataCollector>dc_model_name</DataCollector>
+  </Capture>
+  <Capture>
+    <Collect ref="flow.prompt_tokens" default="0"/>
+    <DataCollector>dc_prompt_token_count</DataCollector>
+  </Capture>
+  <Capture>
+    <Collect ref="flow.completion_tokens" default="0"/>
+    <DataCollector>dc_candidates_token_count</DataCollector>
+  </Capture>
+  <Capture>
+    <Collect ref="flow.total_tokens" default="0"/>
+    <DataCollector>dc_total_token_count</DataCollector>
+  </Capture>
+</DataCapture>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AM-SetGCPClaudeHeaders">
+  <DisplayName>AM-SetGCPClaudeHeaders</DisplayName>
+  <AssignVariable>
+    <Name>target.copy.pathsuffix</Name>
+    <Value>false</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>target.url</Name>
+    <Template>https://aiplatform.googleapis.com/v1/projects/{flow.gcp_project_id}/locations/{flow.gcp_location}/publishers/anthropic/models/{flow.upstream_model}:rawPredict</Template>
+  </AssignVariable>
+  <Set>
+    <Headers>
+      <Header name="anthropic_version">vertex-2023-10-16</Header>
+      <Header name="Content-Type">application/json</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
+

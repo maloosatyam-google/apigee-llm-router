@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="true" enabled="true" name="CORS-Headers">
+  <DisplayName>CORS-Headers</DisplayName>
+  <Set>
+    <Headers>
+      <Header name="Access-Control-Allow-Origin">*</Header>
+      <Header name="Access-Control-Allow-Headers">Origin, X-Requested-With, Content-Type, Accept, Authorization, x-api-key, x-cloud-provider, x-provider, use-cache</Header>
+      <Header name="Access-Control-Allow-Methods">GET, POST, OPTIONS</Header>
+      <Header name="Access-Control-Expose-Headers">x-llm-provider, x-llm-cloud-provider, x-llm-model, x-llm-prompt-tokens, x-llm-completion-tokens, x-llm-total-tokens, x-llm-cost-usd</Header>
+      <Header name="Access-Control-Max-Age">3600</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http"/>
+</AssignMessage>

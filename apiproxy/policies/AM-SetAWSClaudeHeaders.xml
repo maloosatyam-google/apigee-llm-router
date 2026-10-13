@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="false" enabled="true" name="AM-SetAWSClaudeHeaders">
+  <DisplayName>AM-SetAWSClaudeHeaders</DisplayName>
+  <AssignVariable>
+    <Name>target.copy.pathsuffix</Name>
+    <Value>false</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>target.url</Name>
+    <Template>https://bedrock-runtime.{flow.aws_region}.amazonaws.com/model/{flow.upstream_model}/invoke</Template>
+  </AssignVariable>
+  <Set>
+    <Headers>
+      <Header name="Authorization">Bearer {flow.aws_api_key}</Header>
+      <Header name="Content-Type">application/json</Header>
+      <Header name="Accept">application/json</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
+

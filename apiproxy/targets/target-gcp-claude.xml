@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="target-gcp-claude">
+  <Description>GCP Vertex AI Model Garden Target for Anthropic Claude (claude-haiku-4-5, claude-haiku-5-5, claude-sonnet-4-6)</Description>
+  <FaultRules/>
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>JS-TransformToAnthropic</Name>
+      </Step>
+      <Step>
+        <Name>AM-SetGCPClaudeHeaders</Name>
+      </Step>
+    </Request>
+    <Response>
+      <Step>
+        <Name>JS-TransformFromAnthropic</Name>
+      </Step>
+    </Response>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request/>
+    <Response/>
+  </PostFlow>
+  <Flows/>
+  <HTTPTargetConnection>
+    <Properties>
+      <Property name="connect.timeout.millis">60000</Property>
+      <Property name="io.timeout.millis">120000</Property>
+    </Properties>
+    <URL>https://aiplatform.googleapis.com</URL>
+    <Authentication>
+      <GoogleAccessToken>
+        <Scopes>
+          <Scope>https://www.googleapis.com/auth/cloud-platform</Scope>
+        </Scopes>
+      </GoogleAccessToken>
+    </Authentication>
+  </HTTPTargetConnection>
+</TargetEndpoint>
+

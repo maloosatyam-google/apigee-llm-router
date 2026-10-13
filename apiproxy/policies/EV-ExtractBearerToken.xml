@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables continueOnError="true" enabled="true" name="EV-ExtractBearerToken">
+  <DisplayName>EV-ExtractBearerToken</DisplayName>
+  <Header name="Authorization">
+    <Pattern ignoreCase="true">Bearer {flow.extracted_apikey}</Pattern>
+  </Header>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</ExtractVariables>

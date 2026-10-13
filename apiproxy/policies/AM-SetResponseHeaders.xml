@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="true" enabled="true" name="AM-SetResponseHeaders">
+  <DisplayName>AM-SetResponseHeaders</DisplayName>
+  <Set>
+    <Headers>
+      <Header name="x-llm-provider">{flow.provider}</Header>
+      <Header name="x-llm-cloud-provider">{flow.cloud_provider}</Header>
+      <Header name="x-llm-model">{flow.upstream_model}</Header>
+      <Header name="x-llm-prompt-tokens">{flow.prompt_tokens}</Header>
+      <Header name="x-llm-completion-tokens">{flow.completion_tokens}</Header>
+      <Header name="x-llm-total-tokens">{flow.total_tokens}</Header>
+      <Header name="x-llm-cost-usd">{flow.cost_usd}</Header>
+    </Headers>
+  </Set>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="response"/>
+</AssignMessage>

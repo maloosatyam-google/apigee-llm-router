@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage continueOnError="true" enabled="true" name="AM-SetAPIKeyVariable">
+  <DisplayName>AM-SetAPIKeyVariable</DisplayName>
+  <AssignVariable>
+    <Name>flow.extracted_apikey</Name>
+    <Ref>request.header.x-api-key</Ref>
+  </AssignVariable>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="2" name="apigee-llm-router">
+  <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+  <CreatedAt>1727690000000</CreatedAt>
+  <CreatedBy>apigee-admin</CreatedBy>
+  <Description>LiteLLM-compatible Apigee proxy supporting Claude (claude-haiku-4-5, claude-haiku-5-5, claude-sonnet-4-6 across AWS Bedrock, Azure AI Foundry, and GCP Vertex AI), OpenAI, Google Gemini, Qwen, and GLM models.</Description>
+  <DisplayName>Apigee LLM Router</DisplayName>
+  <LastModifiedAt>1728820000000</LastModifiedAt>
+  <LastModifiedBy>apigee-admin</LastModifiedBy>
+  <ManifestVersion majorVersion="4" minorVersion="0"/>
+  <Policies>
+    <Policy>AM-RemoveClientAuth</Policy>
+    <Policy>AM-SetAnthropicHeaders</Policy>
+    <Policy>AM-SetAPIKeyVariable</Policy>
+    <Policy>AM-SetAWSClaudeHeaders</Policy>
+    <Policy>AM-SetAzureClaudeHeaders</Policy>
+    <Policy>AM-SetGCPClaudeHeaders</Policy>
+    <Policy>AM-SetGeminiHeaders</Policy>
+    <Policy>AM-SetGLMHeaders</Policy>
+    <Policy>AM-SetOpenAIHeaders</Policy>
+    <Policy>AM-SetQwenHeaders</Policy>
+    <Policy>AM-SetResponseHeaders</Policy>
+    <Policy>CORS-Headers</Policy>
+    <Policy>DC-ModelAnalytics</Policy>
+    <Policy>EV-ExtractBearerToken</Policy>
+    <Policy>JS-CalculateCost</Policy>
+    <Policy>JS-EstimatePromptTokens</Policy>
+    <Policy>JS-ExtractAndRouteModel</Policy>
+    <Policy>JS-ExtractNativeResponseTokens</Policy>
+    <Policy>JS-FormatErrorResponse</Policy>
+    <Policy>JS-HealthEndpoint</Policy>
+    <Policy>JS-ModelsEndpoint</Policy>
+    <Policy>JS-ResolveProviderCredentials</Policy>
+    <Policy>JS-TransformFromAnthropic</Policy>
+    <Policy>JS-TransformFromGemini</Policy>
+    <Policy>JS-TransformToAnthropic</Policy>
+    <Policy>JS-TransformToGemini</Policy>
+    <Policy>KVM-GetProviderCredentials</Policy>
+    <Policy>RF-InvalidModel</Policy>
+    <Policy>RF-MissingKey</Policy>
+    <Policy>RF-UnsupportedPath</Policy>
+    <Policy>SA-SpikeArrest</Policy>
+    <Policy>VA-VerifyAPIKey</Policy>
+  </Policies>
+  <ProxyEndpoints>
+    <ProxyEndpoint>default</ProxyEndpoint>
+  </ProxyEndpoints>
+  <Resources>
+    <Resource>jsc://CalculateCost.js</Resource>
+    <Resource>jsc://EstimatePromptTokens.js</Resource>
+    <Resource>jsc://ExtractAndRouteModel.js</Resource>
+    <Resource>jsc://ExtractNativeResponseTokens.js</Resource>
+    <Resource>jsc://FormatErrorResponse.js</Resource>
+    <Resource>jsc://HealthEndpoint.js</Resource>
+    <Resource>jsc://ModelsEndpoint.js</Resource>
+    <Resource>jsc://ResolveProviderCredentials.js</Resource>
+    <Resource>jsc://TransformFromAnthropic.js</Resource>
+    <Resource>jsc://TransformFromGemini.js</Resource>
+    <Resource>jsc://TransformToAnthropic.js</Resource>
+    <Resource>jsc://TransformToGemini.js</Resource>
+  </Resources>
+  <TargetEndpoints>
+    <TargetEndpoint>target-openai</TargetEndpoint>
+    <TargetEndpoint>target-anthropic</TargetEndpoint>
+    <TargetEndpoint>target-gcp-claude</TargetEndpoint>
+    <TargetEndpoint>target-aws-claude</TargetEndpoint>
+    <TargetEndpoint>target-azure-claude</TargetEndpoint>
+    <TargetEndpoint>target-gemini</TargetEndpoint>
+    <TargetEndpoint>target-qwen</TargetEndpoint>
+    <TargetEndpoint>target-glm</TargetEndpoint>
+  </TargetEndpoints>
+</APIProxy>
