@@ -264,9 +264,13 @@ Every chat completion through the gateway returns telemetry headers:
 - `x-llm-cost-usd`: Precise cost in USD calculated from rate cards
 - `x-ratelimit-limit-tokens`: Token quota limit configured on the API Product (`Q-EnforceTokenQuota`)
 - `x-ratelimit-remaining-tokens`: Remaining token quota in the current window (`Q-EnforceTokenQuota`)
+- `x-ratelimit-limit-cost-micros`: Cost budget limit in micro-USD ($1.00 = 1,000,000 micro-USD) configured on the API Product (`Q-EnforceCostQuota`)
+- `x-ratelimit-remaining-cost-micros`: Remaining cost budget in micro-USD in the current window (`Q-EnforceCostQuota`)
 
-> **Usage Limits & Cost Tracking (No Monetization Add-On Required)**:
-> - **Usage Limits**: Enforced via [`Q-EnforceTokenQuota.xml`](./apiproxy/policies/Q-EnforceTokenQuota.xml) (`<Quota>` policy weighted by `flow.quota_weight` from [`EstimatePromptTokens.js`](./apiproxy/resources/jsc/EstimatePromptTokens.js) and governed by the API Product's quota settings) alongside [`SA-SpikeArrest.xml`](./apiproxy/policies/SA-SpikeArrest.xml).
-> - **Cost & Token Analytics**: Computed in [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) and exported to Apigee Analytics custom metrics/dimensions via [`DC-ModelAnalytics.xml`](./apiproxy/policies/DC-ModelAnalytics.xml) (`DataCapture`), so the proxy works out-of-the-box on any Apigee X org without requiring the Monetization add-on (`<MonetizationLimitsCheck>`).
+> **Token & Cost Usage Limits via `<Quota>` (No Monetization Add-On Required)**:
+> - **Token Limits (`Q-EnforceTokenQuota.xml`)**: Enforces token consumption limits per API Product (`quota`, default `10,000` tokens/min) weighted by `flow.quota_weight`.
+> - **Cost / Budget Limits (`Q-EnforceCostQuota.xml`)**: Enforces USD spend limits per API Product (`llm_cost_quota_micros` custom attribute, default `10,000,000` micro-USD = **\$10.00**/min) weighted by `flow.cost_quota_weight_micros` (computed in [`EstimatePromptTokens.js`](./apiproxy/resources/jsc/EstimatePromptTokens.js) using each model's rate card, where $1,000,000\ \mu\text{USD} = \$1.00$ so Apigee's integer `<MessageWeight>` tracks sub-cent LLM costs accurately).
+> - **Post-Call Analytics (`DC-ModelAnalytics.xml`)**: Exact total tokens and USD cost from [`CalculateCost.js`](./apiproxy/resources/jsc/CalculateCost.js) are captured into Apigee Analytics custom metrics/dimensions without requiring the Apigee Monetization add-on (`<MonetizationLimitsCheck>`).
+
 
 

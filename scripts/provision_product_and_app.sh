@@ -29,9 +29,18 @@ PRODUCT_PAYLOAD=$(cat <<EOF
 {
   "name": "${PRODUCT_NAME}",
   "displayName": "Apigee LLM Router Product",
-  "ApprovalType": "auto",
+  "approvalType": "auto",
   "description": "Entitles access to apigee-llm-router (/v1/chat/completions, /v1/models)",
   "environments": ["${ENV}"],
+  "quota": "10000",
+  "quotaInterval": "1",
+  "quotaTimeUnit": "minute",
+  "attributes": [
+    {
+      "name": "llm_cost_quota_micros",
+      "value": "10000000"
+    }
+  ],
   "operationGroup": {
     "operationConfigs": [
       {
